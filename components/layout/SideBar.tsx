@@ -7,12 +7,12 @@ import {
   Users,
   Package,
   ShoppingCart,
-  UserPlus,
   ExternalLink,
   Box,
   LogOut
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const customMenu = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -24,17 +24,23 @@ const customMenu = [
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [loading, setLoading] = useState(false); // added loading state
+  const { logout, user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/admin");
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
-  const handleSignOut = () => {
-    setLoading(true); // start loading
-    setTimeout(() => {
-      localStorage.removeItem("token"); // clear token
-      router.push("/auth/logout"); // redirect to logout page
-      setLoading(false); // reset loading
-    }, 1000); // 1 second loading
+  const handleSignOut = async () => {
+    setLoading(true);
+    try {
+      await logout();
+      // The useAuth hook will handle the redirect to /auth/login
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Force redirect even on error
+      router.push("/auth/login");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,11 +51,16 @@ export default function Sidebar() {
           <div className="p-2 bg-green-600 rounded-lg">
             <Box className="w-7 h-7 text-white" />
           </div>
-          <h2 className="text-xl font-bold">Admin Panel</h2>
+          <div>
+            <h2 className="text-xl font-bold">Admin Panel</h2>
+            {user && (
+              <p className="text-xs text-gray-500">{user.username}</p>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* CUSTOM Section */}
+      {/* Navigation Menu */}
       <div className="flex-1 py-4">
         <nav className="space-y-1">
           {customMenu.map((item) => {
@@ -72,12 +83,31 @@ export default function Sidebar() {
         </nav>
       </div>
 
+      {/* User Info */}
+      {user && (
+        <div className="px-6 py-3 border-t border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <span className="text-green-700 font-semibold text-sm">
+                {user.firstName?.charAt(0) || user.username?.charAt(0) || 'A'}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user.firstName ? `${user.firstName} ${user.lastName}` : user.username}
+              </p>
+              <p className="text-xs text-gray-500 truncate">{user.email}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Bottom Links */}
       <div className="border-t border-gray-200 p-4 space-y-3">
         {/* Sign Out Button */}
         <button
           onClick={handleSignOut}
-          disabled={loading} // disable while loading
+          disabled={loading}
           className={`flex items-center gap-4 w-full px-6 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition ${
             loading ? "opacity-70 cursor-not-allowed" : ""
           }`}

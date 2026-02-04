@@ -109,7 +109,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="flex-1 bg-gray-50 p-8 overflow-y-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Products Management</h1>
