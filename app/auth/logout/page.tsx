@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import authService from "@/services/auth.service";
 
 export default function LogoutPage() {
@@ -10,10 +11,16 @@ export default function LogoutPage() {
   useEffect(() => {
     const performLogout = async () => {
       try {
+        // Call logout API to clear refresh token cookie
         await authService.logout();
       } catch (error) {
-        // Silent fail - just redirect
+        console.error("Logout error:", error);
+        // Continue with local cleanup even if API call fails
       } finally {
+        // Clear all local auth data
+        authService.clearAuthData();
+        
+        // Redirect to login page
         router.push("/auth/login");
       }
     };
@@ -25,8 +32,15 @@ export default function LogoutPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+          <LogOut className="w-8 h-8 text-green-600 animate-pulse" />
+        </div>
+        <p className="text-xl font-semibold text-gray-700">Logging out...</p>
+        <p className="text-sm text-gray-500 mt-2">Please wait</p>
+        
+        {/* Loading spinner */}
+        <div className="mt-6">
           <svg
-            className="animate-spin h-8 w-8 text-green-600"
+            className="animate-spin h-8 w-8 text-green-600 mx-auto"
             viewBox="0 0 24 24"
           >
             <circle
@@ -45,8 +59,6 @@ export default function LogoutPage() {
             />
           </svg>
         </div>
-        <p className="text-xl font-semibold text-gray-700">Logging out...</p>
-        <p className="text-sm text-gray-500 mt-2">Please wait</p>
       </div>
     </div>
   );

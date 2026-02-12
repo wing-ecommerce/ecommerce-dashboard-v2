@@ -9,13 +9,15 @@ import {
   ShoppingCart,
   ExternalLink,
   Box,
-  LogOut
+  LogOut,
+  FolderOpen
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 const customMenu = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/categories", label: "Categories", icon: FolderOpen },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/users", label: "Users", icon: Users },
@@ -27,7 +29,16 @@ export default function Sidebar() {
   const { logout, user } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  // Fixed active link detection
+  const isActive = (href: string) => {
+    // Exact match for dashboard ("/admin")
+    if (href === "/admin") {
+      return pathname === "/admin";
+    }
+    
+    // For other routes, check if pathname starts with href
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   const handleSignOut = async () => {
     setLoading(true);

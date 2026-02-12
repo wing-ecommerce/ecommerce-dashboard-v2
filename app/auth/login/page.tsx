@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Lock, Mail, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, AlertCircle, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
@@ -28,13 +28,14 @@ export default function LoginPage() {
         return;
       }
 
+      // Success - redirect to admin dashboard
       setTimeout(() => {
         router.push("/admin");
         router.refresh();
       }, 500);
       
     } catch (err: any) {
-      setError(err.message || "Server error, please try again later.");
+      setError(err.message || "An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -79,10 +80,16 @@ export default function LoginPage() {
                   <input
                     type="text"
                     placeholder="Enter your username or email"
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition antialiased"
+                    style={{
+                      WebkitTextFillColor: '#111827',
+                      WebkitBoxShadow: '0 0 0px 1000px white inset'
+                    }}
                     value={usernameOrEmail}
                     onChange={(e) => setUsernameOrEmail(e.target.value)}
                     required
+                    disabled={loading}
+                    autoComplete="username"
                   />
                 </div>
               </div>
@@ -97,15 +104,22 @@ export default function LoginPage() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                    className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition antialiased"
+                    style={{
+                      WebkitTextFillColor: '#111827',
+                      WebkitBoxShadow: '0 0 0px 1000px white inset'
+                    }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    disabled={loading}
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                    disabled={loading}
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -122,12 +136,14 @@ export default function LoginPage() {
                   <input
                     type="checkbox"
                     className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                    disabled={loading}
                   />
                   <span className="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
                 <button
                   type="button"
-                  className="text-sm text-green-600 hover:text-green-700 font-medium transition"
+                  className="text-sm text-green-600 hover:text-green-700 font-medium transition disabled:opacity-50"
+                  disabled={loading}
                 >
                   Forgot password?
                 </button>
@@ -191,7 +207,6 @@ export default function LoginPage() {
             Manage your e-commerce platform with powerful admin tools. 
             Monitor sales, manage products, and handle customer orders all in one place.
           </p>
-          
         </div>
       </div>
     </div>
