@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MoreVertical, Plus, Search, Loader2, AlertCircle, Edit, Trash2, X } from "lucide-react";
+import { MoreVertical, Plus, Search, Loader2, AlertCircle, Edit, Trash2, X, Images } from "lucide-react";
 import productService from "@/services/product.service";
 import categoryService from "@/services/category.service";
 import ProductForm from "@/components/products/ProductForm";
@@ -17,6 +17,7 @@ export default function ProductsPage() {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [viewingPhotos, setViewingPhotos] = useState<Product | null>(null);
 
   useEffect(() => {
     loadData();
@@ -169,13 +170,24 @@ export default function ProductsPage() {
                   <tr key={product.id} className="hover:bg-gray-50 transition">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        {product.image ? (
-                          <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded-lg" />
-                        ) : (
-                          <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <span className="text-gray-400 text-xs">No img</span>
-                          </div>
-                        )}
+                        <div className="relative">
+                          {product.image ? (
+                            <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded-lg" />
+                          ) : (
+                            <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                              <span className="text-gray-400 text-xs">No img</span>
+                            </div>
+                          )}
+                          {product.additionalPhotos && product.additionalPhotos.length > 0 && (
+                            <button
+                              onClick={() => setViewingPhotos(product)}
+                              className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 hover:bg-green-600 transition shadow-lg"
+                              title={`${product.additionalPhotos.length} additional photo${product.additionalPhotos.length > 1 ? 's' : ''}`}
+                            >
+                              <Images className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
                         <div>
                           <p className="font-semibold text-gray-900">{product.name}</p>
                           <p className="text-xs text-gray-600 font-mono">{product.slug}</p>
@@ -272,7 +284,7 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Product Form Modal */}
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
@@ -288,6 +300,67 @@ export default function ProductsPage() {
               onSave={handleSave}
               onCancel={closeModal}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Photo Gallery Modal */}
+      {viewingPhotos && (
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+          onClick={() => setViewingPhotos(null)}
+        >
+          <div
+            className="bg-white rounded-2xl w-full max-w-4xl shadow-2xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{viewingPhotos.name}</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {viewingPhotos.additionalPhotos?.length || 0} additional photo{viewingPhotos.additionalPhotos && viewingPhotos.additionalPhotos.length !== 1 ? 's' : ''}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setViewingPhotos(null)}
+                  className="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Main Image */}
+              {viewingPhotos.image && (
+                <div className="mb-6">
+                  <p className="text-sm font-semibold text-gray-700 mb-2">Main Image</p>
+                  <img
+                    src={viewingPhotos.image}
+                    alt={viewingPhotos.name}
+                    className="w-full h-64 object-cover rounded-lg border border-gray-200"
+                  />
+                </div>
+              )}
+
+              {/* Additional Photos Grid */}
+              {viewingPhotos.additionalPhotos && viewingPhotos.additionalPhotos.length > 0 && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-700 mb-3">Additional Photos</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {viewingPhotos.additionalPhotos.map((photo, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={photo}
+                          alt={`${viewingPhotos.name} - Photo ${index + 1}`}
+                          className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition rounded-lg" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

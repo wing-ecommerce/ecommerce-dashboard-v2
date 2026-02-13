@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, Loader2, AlertCircle, X, Users, UserCheck } from "lucide-react";
 import userService from "@/services/user.service";
-import UserDetails from "@/components/Users/UserDetails";
+import UserDetails from "@/components/users/UserDetails";
 import { User } from "@/types/user.types";
 
 export default function CustomersPage() {

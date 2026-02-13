@@ -91,6 +91,7 @@ export interface ProductFormData {
   originalPrice: string;
   discount: string;
   image: string;
+  additionalPhotos: string[];
   description: string;
   categoryId: string;
   sizes: {

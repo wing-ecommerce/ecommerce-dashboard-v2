@@ -20,7 +20,7 @@ const customMenu = [
   { href: "/admin/categories", label: "Categories", icon: FolderOpen },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
-  { href: "/admin/users", label: "users", icon: Users },
+  { href: "/admin/users", label: "Users", icon: Users },
 ];
 
 export default function Sidebar() {

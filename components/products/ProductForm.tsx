@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, Plus, Image as ImageIcon } from "lucide-react";
 import productService from "@/services/product.service";
 import { Product, Category, ProductFormData } from "@/types/product.types";
 
@@ -22,6 +22,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
     originalPrice: "",
     discount: "",
     image: "",
+    additionalPhotos: [],
     description: "",
     categoryId: "",
     sizes: [{ size: "M", stock: "0", priceOverride: "", sku: "" }],
@@ -36,6 +37,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
         originalPrice: product.originalPrice?.toString() || "",
         discount: product.discount?.toString() || "",
         image: product.image || "",
+        additionalPhotos: product.additionalPhotos || [],
         description: product.description || "",
         categoryId: product.categoryId,
         sizes: product.sizes.map(s => ({
@@ -53,6 +55,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
         originalPrice: "",
         discount: "",
         image: "",
+        additionalPhotos: [],
         description: "",
         categoryId: categories[0]?.id || "",
         sizes: [{ size: "M", stock: "0", priceOverride: "", sku: "" }],
@@ -97,6 +100,28 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
     setForm({ ...form, discount, price });
   };
 
+  // Additional Photos Management
+  const addAdditionalPhoto = () => {
+    setForm({
+      ...form,
+      additionalPhotos: [...form.additionalPhotos, ""],
+    });
+  };
+
+  const removeAdditionalPhoto = (index: number) => {
+    setForm({
+      ...form,
+      additionalPhotos: form.additionalPhotos.filter((_, i) => i !== index),
+    });
+  };
+
+  const updateAdditionalPhoto = (index: number, value: string) => {
+    const newPhotos = [...form.additionalPhotos];
+    newPhotos[index] = value;
+    setForm({ ...form, additionalPhotos: newPhotos });
+  };
+
+  // Sizes Management
   const addSize = () => {
     setForm({
       ...form,
@@ -129,7 +154,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
       setSaving(true);
       setError("");
 
-      // ✨ FIX: Convert empty strings to undefined/null for optional fields
+      // Convert empty strings to undefined/null for optional fields
       const productData = {
         name: form.name,
         slug: form.slug,
@@ -137,6 +162,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
         originalPrice: form.originalPrice ? parseFloat(form.originalPrice) : undefined,
         discount: form.discount ? parseInt(form.discount) : undefined,
         image: form.image || undefined,
+        additionalPhotos: form.additionalPhotos.filter(photo => photo.trim() !== ""),
         description: form.description || undefined,
         categoryId: form.categoryId,
         sizes: form.sizes.map(s => ({
@@ -251,7 +277,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-800 mb-2">Discount (%) 🔄</label>
+            <label className="block text-sm font-semibold text-gray-800 mb-2">Discount (%) </label>
             <input
               type="number"
               placeholder="20"
@@ -263,9 +289,9 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
           </div>
         </div>
 
-        {/* Image URL */}
+        {/* Main Image URL */}
         <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-2">Image URL</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">Main Image URL</label>
           <input
             type="text"
             placeholder="https://example.com/image.jpg"
@@ -274,6 +300,86 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
             disabled={saving}
           />
+          {form.image && (
+            <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <img 
+                src={form.image} 
+                alt="Preview" 
+                className="w-32 h-32 object-cover rounded-lg"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Additional Photos */}
+        <div>
+          <div className="flex justify-between items-center mb-3">
+            <label className="block text-sm font-semibold text-gray-800">Additional Photos</label>
+            <button
+              type="button"
+              onClick={addAdditionalPhoto}
+              className="flex items-center gap-2 text-sm text-green-500 hover:text-green-600 font-semibold"
+              disabled={saving}
+            >
+              <Plus className="w-4 h-4" />
+              Add Photo
+            </button>
+          </div>
+          
+          {form.additionalPhotos.length === 0 ? (
+            <div className="p-6 border-2 border-dashed border-gray-300 rounded-lg text-center">
+              <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-500">No additional photos added</p>
+              <button
+                type="button"
+                onClick={addAdditionalPhoto}
+                className="mt-3 text-sm text-green-500 hover:text-green-600 font-semibold"
+                disabled={saving}
+              >
+                Add your first photo
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {form.additionalPhotos.map((photo, index) => (
+                <div key={index} className="flex gap-3 items-start">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      placeholder="https://example.com/photo.jpg"
+                      value={photo}
+                      onChange={(e) => updateAdditionalPhoto(index, e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
+                      disabled={saving}
+                    />
+                    {photo && (
+                      <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200 inline-block">
+                        <img 
+                          src={photo} 
+                          alt={`Additional ${index + 1}`} 
+                          className="w-20 h-20 object-cover rounded"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeAdditionalPhoto(index)}
+                    className="p-3 text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0"
+                    disabled={saving}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Description */}
