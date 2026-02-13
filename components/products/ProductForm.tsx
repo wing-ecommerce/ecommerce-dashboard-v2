@@ -191,7 +191,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             placeholder="e.g., Classic White T-Shirt"
             value={form.name}
             onChange={(e) => handleNameChange(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
             disabled={saving}
           />
         </div>
@@ -214,7 +214,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
           <select
             value={form.categoryId}
             onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 font-medium"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 font-medium"
             disabled={saving}
           >
             <option value="">Select Category</option>
@@ -234,7 +234,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
               placeholder="29.99"
               value={form.price}
               onChange={(e) => handlePriceChange(e.target.value, form.originalPrice)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
               disabled={saving}
             />
           </div>
@@ -246,7 +246,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
               placeholder="39.99"
               value={form.originalPrice}
               onChange={(e) => handlePriceChange(form.price, e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
               disabled={saving}
             />
           </div>
@@ -271,7 +271,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             placeholder="https://example.com/image.jpg"
             value={form.image}
             onChange={(e) => setForm({ ...form, image: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
             disabled={saving}
           />
         </div>
@@ -284,7 +284,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             rows={3}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
             disabled={saving}
           />
         </div>
@@ -296,7 +296,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
             <button
               type="button"
               onClick={addSize}
-              className="text-sm text-blue-600 hover:text-blue-700 font-semibold"
+              className="text-sm text-green-500 hover:text-green-600 font-semibold"
               disabled={saving}
             >
               + Add Size
@@ -310,7 +310,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
                   placeholder="Size"
                   value={size.size}
                   onChange={(e) => updateSize(index, "size", e.target.value)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
                   disabled={saving}
                 />
                 <input
@@ -318,7 +318,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
                   placeholder="Stock"
                   value={size.stock}
                   onChange={(e) => updateSize(index, "stock", e.target.value)}
-                  className="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+                  className="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
                   disabled={saving}
                 />
                 <input
@@ -327,7 +327,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
                   placeholder="Price override"
                   value={size.priceOverride}
                   onChange={(e) => updateSize(index, "priceOverride", e.target.value)}
-                  className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+                  className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
                   disabled={saving}
                 />
                 <input
@@ -366,7 +366,7 @@ export default function ProductForm({ product, categories, onSave, onCancel }: P
         <button
           onClick={handleSubmit}
           disabled={saving}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold"
+          className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold"
         >
           {saving && <Loader2 className="w-4 h-4 animate-spin" />}
           {saving ? "Saving..." : product ? "Update" : "Create"} Product

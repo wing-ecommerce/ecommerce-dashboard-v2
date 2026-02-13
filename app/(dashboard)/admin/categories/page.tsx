@@ -129,7 +129,7 @@ export default function CategoriesPage() {
     return (
       <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-green-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading categories...</p>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function CategoriesPage() {
         <h1 className="text-3xl font-bold text-gray-800">Categories Management</h1>
         <button
           onClick={() => openModal()}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition"
+          className="flex items-center gap-2 bg-green-500 text-white px-5 py-3 rounded-lg hover:bg-green-600 transition"
         >
           <Plus className="w-5 h-5" />
           Add new category
@@ -177,7 +177,7 @@ export default function CategoriesPage() {
             placeholder="Search categories..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 text-gray-900 placeholder:text-gray-500"
+            className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-64 text-gray-900 placeholder:text-gray-500"
           />
           <Search className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
         </div>
@@ -207,8 +207,8 @@ export default function CategoriesPage() {
                   <tr key={category.id} className="hover:bg-gray-50 transition">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <Package className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                          <Package className="w-5 h-5 text-green-600" />
                         </div>
                         <p className="font-semibold text-gray-900">{category.name}</p>
                       </div>
@@ -273,7 +273,7 @@ export default function CategoriesPage() {
           </div>
           <button
             onClick={loadCategories}
-            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition font-semibold"
+            className="px-4 py-2 text-green-500 hover:bg-green-50 rounded-lg transition font-semibold"
           >
             Refresh
           </button>
@@ -305,7 +305,7 @@ export default function CategoriesPage() {
                   placeholder="e.g., T-Shirts"
                   value={form.name}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 placeholder:text-gray-500"
                   disabled={saving}
                   autoFocus
                 />
@@ -320,7 +320,7 @@ export default function CategoriesPage() {
                   type="text"
                   value={form.slug}
                   onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-gray-900"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 font-mono text-sm text-gray-900"
                   disabled={saving}
                 />
                 <p className="mt-1 text-xs text-gray-600 font-medium">
@@ -340,7 +340,7 @@ export default function CategoriesPage() {
               <button
                 onClick={saveCategory}
                 disabled={saving}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold"
+                className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold"
               >
                 {saving && <Loader2 className="w-4 h-4 animate-spin" />}
                 {saving ? "Saving..." : editingCategory ? "Update" : "Create"} Category
