@@ -155,3 +155,51 @@ Admin (Email + Password)
 
 ## Project Folder Structure
 ![alt text](./img/image-7.png)
+
+```
+admin-dashboard/
+├── app/
+│   ├── (auth)/
+│   │   └── login/page.tsx
+│   │
+│   ├── dashboard/page.tsx
+│   ├── products/page.tsx
+│   ├── orders/page.tsx
+│   ├── users/page.tsx
+│   │
+│   ├── layout.tsx
+│   └── globals.css
+│
+├── components/
+│   ├── ui/
+│   ├── layout/          # sidebar, topbar
+│   ├── tables/
+│   └── forms/
+│
+├── services/
+│   ├── api.ts
+│   ├── auth.service.ts
+│   ├── product.service.ts
+│   ├── order.service.ts
+│   └── user.service.ts
+│
+├── hooks/
+│   └── useAuth.ts
+│
+├── store/
+│   └── auth.store.ts
+│
+├── types/
+│   ├── product.ts
+│   ├── user.ts
+│   └── order.ts
+│
+├── utils/
+│   ├── constants.ts
+│   └── helpers.ts
+│
+├── middleware.ts       # ADMIN ROLE CHECK HERE
+├── .env.local
+├── next.config.ts
+└── package.json
+```
