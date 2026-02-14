@@ -1,36 +1,157 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### TeeSpace Clothing Ecommerce Website: Admin Dashboard
 
-## Getting Started
+- git repo:`https://github.com/wing-ecommerce/ecommerce-dashboard-v2`
+- hosting: `https://teespace-admin.vercel.app/`
 
-First, run the development server:
+This dashboard allows administrators to:
 
-```bash
+- Manage products and category (Add, Delete, Update)
+- Manage users (view user)
+- View and manage orders (update order status)
+
+Built with Next.js and connected to the Spring Boot backend API.
+
+### Table of Contents
+
+- [Setup](#setup)
+- [Environment Variable](#environment-variable)
+- [Features](#features)
+- [Authentication \& Authorization](#authentication--authorization)
+- [Tech Stack](#tech-stack)
+- [Project Folder Structure](#project-folder-structure)
+## Setup
+
+- how to run local:
+```
+git clone https://github.com/wing-ecommerce/ecommerce-dashboard-v2
+cd ecommerce-dashboard-v2
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- run on: `http://localhost:4000`
+  
+## Environment Variable
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Admin Login
+   
+   ![alt text](./img/image.png)
 
-## Learn More
+- username: admin
+- email: admin@ecommerce.com
+- password: admin123!@
 
-To learn more about Next.js, take a look at the following resources:
+2. Manage products (Add, Delete, Update)
+   
+    ![alt text](./img/image-1.png)
+- Product body
+```json
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+{
+  "name": "Floral Summer Skirt",
+  "slug": "floral-summer-skirt",
+  "price": 45.00,
+  "originalPrice": 65.00,
+  "discount": 30,
+  "image": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500",
+  "additionalPhotos": [],
+  "description": "Lightweight floral print skirt perfect for summer days",
+  "categoryId": "skirt",
+  "sizes": [
+    {
+      "size": "S",
+      "stock": 15,
+      "sku": "floral-skirt-s"
+    },
+    {
+      "size": "M",
+      "stock": 20,
+      "sku": "floral-skirt-m"
+    },
+    {
+      "size": "L",
+      "stock": 18,
+      "sku": "floral-skirt-l"
+    },
+    {
+      "size": "XL",
+      "stock": 12,
+      "sku": "floral-skirt-xl"
+    }
+  ]
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Manage Category (Add, Delete, Update)
+   
+   ![alt text](./img/image-2.png)
 
-## Deploy on Vercel
+- Cateory Body
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "name": "T-Shirt",
+  "slug": "t-shirt"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Manage Order (Update order status)
+
+    ![alt text](./img/image-3.png)
+    ![alt text](./img/image-5.png)
+5. Manage User (View User information who have USER role)
+   
+   ![alt text](./img/image-4.png)
+   ![alt text](./img/image-6.png)
+
+6. Security Features
+
+- Protected routes
+- Role validation on both frontend and backend
+- Secure token handling (HttpOnly cookies)
+- Backend API validation for every admin action
+
+## Authentication & Authorization
+
+The Admin Dashboard uses secure JWT authentication:
+
+- Access Token (HttpOnly cookie)
+- Refresh Token for session renewal
+- Role-based access control (ADMIN role required)
+- Only users with the ADMIN role can access this dashboard.
+
+Unauthorized users are redirected to the login page.
+
+* Process of Admin login
+
+```
+Admin (Email + Password)
+            ↓
+        Next.js (Login Form)
+            ↓
+      Spring Boot Backend
+   - Verify password (BCrypt)
+   - Check role = ADMIN
+   - Generate JWT
+            ↓
+     Return JWT to Frontend
+            ↓
+   Access Admin Dashboard
+```
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Axios
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+
+## Project Folder Structure
+![alt text](./img/image-7.png)
